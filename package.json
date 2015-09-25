@@ -1,0 +1,11 @@
+{
+  "name": "vmplate",
+  "version": "1.0.0",
+  "description": "Simple templates for node programs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jeremy Ruppel",
+  "license": "ISC"
+}
