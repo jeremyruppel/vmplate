@@ -11,13 +11,13 @@ module.exports = function vmplate(string, filename) {
 
   function compile(string) {
     var token = '<%=';
-    var index = 0;
-    var start = 0;
+    var index;
+    var start;
     var match;
-    var script = 'var str = ""\n';
+    var output = 'var str = ""\n';
 
     function push(str) {
-      script += 'str += ' + str + '\n';
+      output += 'str += ' + str + '\n';
     }
 
     function code(str) {
@@ -49,12 +49,15 @@ module.exports = function vmplate(string, filename) {
     }
 
     if (start < string.length) {
+      if (token === '%>') {
+        throw new SyntaxError('Unclosed code section');
+      }
       text(string.slice(start));
     }
 
-    debug('compiled\n' + script);
+    debug('compiled\n' + output);
 
-    return script;
+    return output;
   }
 
   function quote(str) {
