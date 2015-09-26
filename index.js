@@ -10,35 +10,51 @@ module.exports = function vmplate(string, filename) {
   };
 
   function compile(string) {
-    var regex = /<%=(.+?)%>/;
+    var token = '<%=';
+    var index = 0;
+    var start = 0;
     var match;
-    var code = 'var str = ""\n';
+    var script = 'var str = ""\n';
 
     function push(str) {
-      code += 'str += ' + str + '\n';
+      script += 'str += ' + str + '\n';
     }
 
-    while (match = regex.exec(string)) {
-      debug('match', match);
+    function code(str) {
+      debug('code %j', str);
+      push(trim(str));
+    }
 
-      var pre = string.slice(0, match.index);
+    function text(str) {
+      debug('text %j', str);
+      push(quote(str));
+    }
 
-      if (pre.length) {
-        push(quote(pre));
+    while ((index = string.indexOf(token, start)) > -1) {
+      debug('token=%j start=%s index=%d', token, start, index);
+
+      match = string.slice(start, index);
+      start = index + token.length
+
+      switch (token) {
+      case '<%=':
+        text(match);
+        token = '%>';
+        break;
+      case '%>':
+        code(match);
+        token = '<%=';
+        break;
       }
-
-      push(trim(match[1]));
-
-      string = string.slice(match.index + match[0].length);
     }
 
-    if (string.length) {
-      push(quote(string));
+    if (start < string.length) {
+      text(string.slice(start));
     }
 
-    debug('compiled\n' + code);
+    debug('compiled\n' + script);
 
-    return code;
+    return script;
   }
 
   function quote(str) {
