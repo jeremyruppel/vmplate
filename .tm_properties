@@ -1,0 +1,18 @@
+excludeInFolderSearch = "{$excludeInFolderSearch,node_modules}"
+
+excludeInFileChooser = "{$excludeInFileChooser,node_modules}"
+
+include = "{$include,.gitignore}"
+include = "{$include,.jshintrc}"
+include = "{$include,.jshintignore}"
+include = "{$include,.npmignore}"
+include = "{$include,.travis.yml}"
+
+softWrap = false
+softTabs = true
+tabSize  = 2
+
+[ text.html.markdown ]
+softWrap = true
+softTabs = false
+tabSize  = 2
