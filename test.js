@@ -18,4 +18,14 @@ describe('vmplate', function() {
 
     assert.equal(render({ one: 'me', two: 'myself', three: 'I' }), 'me myself and I');
   });
+  it('evaluates code without output', function() {
+    var render = subject('<% var who = "george"; %>by <%= who %>!');
+
+    assert.equal(render(), 'by george!');
+  });
+  it('evaluates any valid javascript', function() {
+    var render = subject('<% for(var i = 0; i < 3; i++){ %>hey<% } %>!');
+
+    assert.equal(render(), 'heyheyhey!');
+  });
 });

@@ -2,7 +2,7 @@ var debug = require('debug')('vmplate');
 var vm = require('vm');
 
 module.exports = function vmplate(string, filename) {
-  var SCRIPT = /<%=/;
+  var SCRIPT = /<%=?/;
   var STRING = /%>/;
   var script = vm.createScript(compile(string), filename || 'template.vm');
 
@@ -14,16 +14,27 @@ module.exports = function vmplate(string, filename) {
     var output = 'var str = ""\n';
     var token = SCRIPT;
     var start = 0;
-    var input;
+    var previous;
     var match;
 
     function push(str) {
       output += 'str += ' + str + '\n';
     }
 
+    function eval(str) {
+      output += str + '\n';
+    }
+
     function code(str) {
-      debug('code %j', str);
-      push(trim(str));
+      debug('code %j', str, match.prev[0]);
+      switch (match.prev[0]) {
+      case '<%=':
+        push(trim(str));
+        break;
+      case '<%':
+        eval(trim(str));
+        break;
+      }
     }
 
     function text(str) {
@@ -33,7 +44,11 @@ module.exports = function vmplate(string, filename) {
 
     function scan(input) {
       debug('input %j', input);
-      return token.exec(input);
+      var res;
+      if (res = token.exec(input)) {
+        res.prev = match;
+      }
+      return res;
     }
 
     while (match = scan(string.substr(start))) {
@@ -42,12 +57,12 @@ module.exports = function vmplate(string, filename) {
       input = string.substr(start, match.index);
       start = start + match.index + match[0].length;
 
-      switch (match[0]) {
-      case '<%=':
+      switch (token) {
+      case SCRIPT:
         text(input);
         token = STRING;
         break;
-      case '%>':
+      case STRING:
         code(input);
         token = SCRIPT;
         break;
