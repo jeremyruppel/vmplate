@@ -10,10 +10,11 @@ exports = module.exports = function vmplate(string, locals, filename) {
     locals = locals || {};
     locals.__proto__ = render.locals;
 
-    return script.runInNewContext(locals);
+    return script.runInNewContext(hoist(locals));
   }
 
-  render.locals = locals || { __proto__: exports.locals };
+  render.locals = locals || {};
+  render.locals.__proto__ = exports.locals;
 
   return render;
 
@@ -94,6 +95,14 @@ exports = module.exports = function vmplate(string, locals, filename) {
 
   function trim(str) {
     return str.trim();
+  }
+
+  // node v0.10.x vm doesn't copy over __proto__
+  function hoist(obj) {
+    for (var key in obj) {
+      obj[key] = obj[key];
+    }
+    return obj;
   }
 
 };
