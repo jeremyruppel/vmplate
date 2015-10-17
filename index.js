@@ -2,7 +2,8 @@ var debug = require('debug')('vmplate');
 var vm = require('vm');
 
 module.exports = function vmplate(string, filename) {
-
+  var SCRIPT = /<%=/;
+  var STRING = /%>/;
   var script = vm.createScript(compile(string), filename || 'template.vm');
 
   return function render(locals) {
@@ -10,11 +11,11 @@ module.exports = function vmplate(string, filename) {
   };
 
   function compile(string) {
-    var token = '<%=';
-    var index;
-    var start;
-    var match;
     var output = 'var str = ""\n';
+    var token = SCRIPT;
+    var start = 0;
+    var input;
+    var match;
 
     function push(str) {
       output += 'str += ' + str + '\n';
@@ -30,29 +31,34 @@ module.exports = function vmplate(string, filename) {
       push(quote(str));
     }
 
-    while ((index = string.indexOf(token, start)) > -1) {
-      debug('token=%j start=%s index=%d', token, start, index);
+    function scan(input) {
+      debug('input %j', input);
+      return token.exec(input);
+    }
 
-      match = string.slice(start, index);
-      start = index + token.length
+    while (match = scan(string.substr(start))) {
+      debug('token=%s start=%s match=%s', token, start, match);
 
-      switch (token) {
+      input = string.substr(start, match.index);
+      start = start + match.index + match[0].length;
+
+      switch (match[0]) {
       case '<%=':
-        text(match);
-        token = '%>';
+        text(input);
+        token = STRING;
         break;
       case '%>':
-        code(match);
-        token = '<%=';
+        code(input);
+        token = SCRIPT;
         break;
       }
     }
 
     if (start < string.length) {
-      if (token === '%>') {
+      if (token === STRING) {
         throw new SyntaxError('Unclosed code section');
       }
-      text(string.slice(start));
+      text(string.substr(start));
     }
 
     debug('compiled\n' + output);
