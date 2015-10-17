@@ -86,6 +86,6 @@ Render locals inherit from instance locals, which in turn inherit from the vmpla
 
 ## License
 
-[ISC License][https://github.com/jeremyruppel/vmplate/blob/master/LICENSE]
+[ISC License](https://github.com/jeremyruppel/vmplate/blob/master/LICENSE)
 
 [1]: https://nodejs.org/api/vm.html
