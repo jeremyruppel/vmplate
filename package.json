@@ -6,6 +6,14 @@
   "scripts": {
     "test": "mocha test.js"
   },
+  "keywords": [
+    "template",
+    "mini",
+    "micro",
+    "vm",
+    "cli",
+    "file"
+  ],
   "author": "Jeremy Ruppel",
   "license": "ISC",
   "devDependencies": {
