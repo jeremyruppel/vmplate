@@ -28,6 +28,20 @@ describe('vmplate', function() {
 
     assert.equal(render(), 'heyheyhey!');
   });
+  it('iterates over an array in the locals context', function() {
+    var render = subject('<% for(var i = 0; i < arr.length; i++){ %><%= arr[i] %><% } %>');
+
+    assert.equal(render({ arr: [1, 2, 3] }), '123');
+  });
+  it('calls a function in the locals context', function() {
+    var render = subject('<%= upcase(yell) %>!');
+
+    render.locals.upcase = function(str) {
+      return str.toUpperCase();
+    };
+
+    assert.equal(render({ yell: 'yay' }), 'YAY!');
+  });
   it('inherits locals from the instance', function() {
     var render = subject('<%= foo %> <%= bar %>');
 

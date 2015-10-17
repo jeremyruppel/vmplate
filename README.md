@@ -41,6 +41,24 @@ console.log(render()); // hello nasty!
 
 If you provide a `filename`, it will be used as the filename of the vm script and only really shows up in error messages.
 
+### templating
+
+vmplate uses [ejs][2]-style delimiters, but there are only two supported operations.
+
+`<%= foo %>` (note the *=*) will add the value of `foo` to the buffer. The program will throw if `foo` is not defined.
+
+`<% var foo = "bar"; %>` will evaluate the expression but will _not_ add it to the buffer. This makes any expression that's also valid javascript usable in your template.
+
+For example, here's how to iterate over an array:
+
+``` js
+var render = subject('<% for(var i = 0; i < arr.length; i++){ %><%= arr[i] %><% } %>');
+
+console.log(render({ arr: [1, 2, 3] })); // 123
+```
+
+The program will throw if there is a syntax error in your javascript.
+
 ### vmplate.locals → render.locals → locals
 
 There are four ways to provide locals to your vmplate:
@@ -89,3 +107,4 @@ Render locals inherit from instance locals, which in turn inherit from the vmpla
 [ISC License](https://github.com/jeremyruppel/vmplate/blob/master/LICENSE)
 
 [1]: https://nodejs.org/api/vm.html
+[2]: https://github.com/mde/ejs
