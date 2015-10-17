@@ -26,10 +26,16 @@ exports = module.exports = function vmplate(string, locals, filename) {
     var match;
 
     function push(str) {
+      if (!str.length) {
+        return;
+      }
       output += 'str += ' + str + '\n';
     }
 
     function eval(str) {
+      if (!str.length) {
+        return;
+      }
       output += str + '\n';
     }
 
@@ -47,6 +53,9 @@ exports = module.exports = function vmplate(string, locals, filename) {
 
     function text(str) {
       debug('text %j', str);
+      if (!str.length) {
+        return;
+      }
       push(quote(str));
     }
 

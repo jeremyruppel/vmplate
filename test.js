@@ -28,6 +28,11 @@ describe('vmplate', function() {
 
     assert.equal(render(), 'heyheyhey!');
   });
+  it('does not evaluate empty code blocks', function() {
+    var render = subject('o<%= %>hai');
+
+    assert.equal(render(), 'ohai');
+  });
   it('iterates over an array in the locals context', function() {
     var render = subject('<% for(var i = 0; i < arr.length; i++){ %><%= arr[i] %><% } %>');
 
