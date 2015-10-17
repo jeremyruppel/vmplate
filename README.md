@@ -2,6 +2,8 @@
 
 Simple templates for node programs.
 
+[![Build Status](https://travis-ci.org/jeremyruppel/vmplate.svg?branch=master)](https://travis-ci.org/jeremyruppel/vmplate)
+
 vmplate templates depend on the [vm][1] module to create a reusable template context. They're great for command-line programs or templating files, but they don't do any escaping and they won't work in the browser, so they're a _bad choice for HTML_.
 
 # Install
