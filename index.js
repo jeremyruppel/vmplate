@@ -6,9 +6,16 @@ module.exports = function vmplate(string, filename) {
   var STRING = /%>/;
   var script = vm.createScript(compile(string), filename || 'template.vm');
 
-  return function render(locals) {
+  function render(locals) {
+    locals = locals || {};
+    locals.__proto__ = render.locals;
+
     return script.runInNewContext(locals);
-  };
+  }
+
+  render.locals = {};
+
+  return render;
 
   function compile(string) {
     var output = 'var str = ""\n';

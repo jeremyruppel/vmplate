@@ -28,4 +28,12 @@ describe('vmplate', function() {
 
     assert.equal(render(), 'heyheyhey!');
   });
+  it('inherits locals from the instance', function() {
+    var render = subject('<%= foo %> <%= bar %>');
+
+    render.locals.foo = 'omg';
+    render.locals.bar = 'wow';
+
+    assert.equal(render({ foo: 'yay' }), 'yay wow');
+  });
 });
