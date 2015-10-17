@@ -36,4 +36,13 @@ describe('vmplate', function() {
 
     assert.equal(render({ foo: 'yay' }), 'yay wow');
   });
+  it('inherits locals from the factory', function() {
+    var render = subject('<%= foo %> <%= bar %> <%= baz %>');
+
+    subject.locals.foo = 'omg';
+    subject.locals.bar = 'wow';
+    render.locals.baz = 'amaze';
+
+    assert.equal(render({ foo: 'yay' }), 'yay wow amaze');
+  });
 });
