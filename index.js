@@ -1,7 +1,7 @@
 var debug = require('debug')('vmplate');
 var vm = require('vm');
 
-exports = module.exports = function vmplate(string, filename) {
+exports = module.exports = function vmplate(string, locals, filename) {
   var SCRIPT = /<%=?/;
   var STRING = /%>/;
   var script = vm.createScript(compile(string), filename || 'template.vm');
@@ -13,7 +13,7 @@ exports = module.exports = function vmplate(string, filename) {
     return script.runInNewContext(locals);
   }
 
-  render.locals = { __proto__: exports.locals };
+  render.locals = locals || { __proto__: exports.locals };
 
   return render;
 

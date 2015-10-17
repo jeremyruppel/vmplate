@@ -36,6 +36,14 @@ describe('vmplate', function() {
 
     assert.equal(render({ foo: 'yay' }), 'yay wow');
   });
+  it('can pass in instance locals', function() {
+    var render = subject('<%= foo %> <%= bar %>', {
+      foo: 'omg',
+      bar: 'wow'
+    });
+
+    assert.equal(render({ foo: 'yay' }), 'yay wow');
+  });
   it('inherits locals from the factory', function() {
     var render = subject('<%= foo %> <%= bar %> <%= baz %>');
 
