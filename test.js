@@ -1,6 +1,8 @@
 var subject = require(__dirname);
 var assert = require('assert');
 
+/* jshint mocha:true */
+
 describe('vmplate', function() {
   it('throws on an unclosed code section', function() {
     assert.throws(function() { subject('<%= oops'); }, /SyntaxError/);
@@ -15,8 +17,9 @@ describe('vmplate', function() {
   });
   it('interpolates multiple values', function() {
     var render = subject('<%= one %> <%= two %> and <%= three %>');
+    var output = render({ one: 'me', two: 'myself', three: 'I' });
 
-    assert.equal(render({ one: 'me', two: 'myself', three: 'I' }), 'me myself and I');
+    assert.equal(output, 'me myself and I');
   });
   it('evaluates code without output', function() {
     var render = subject('<% var who = "george"; %>by <%= who %>!');
@@ -34,7 +37,11 @@ describe('vmplate', function() {
     assert.equal(render(), 'ohai');
   });
   it('iterates over an array in the locals context', function() {
-    var render = subject('<% for(var i = 0; i < arr.length; i++){ %><%= arr[i] %><% } %>');
+    var render = subject(
+      '<% for(var i = 0; i < arr.length; i++){ %>' +
+      '<%= arr[i] %>' +
+      '<% } %>'
+    );
 
     assert.equal(render({ arr: [1, 2, 3] }), '123');
   });

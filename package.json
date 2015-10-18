@@ -4,7 +4,8 @@
   "description": "Simple templates for node programs",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test.js"
+    "test": "mocha test.js",
+    "lint": "jshint ."
   },
   "keywords": [
     "template",
@@ -17,6 +18,7 @@
   "author": "Jeremy Ruppel",
   "license": "ISC",
   "devDependencies": {
+    "jshint": "^2.8.0",
     "mocha": "^2.3.3"
   },
   "dependencies": {

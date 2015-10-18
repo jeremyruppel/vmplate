@@ -22,7 +22,7 @@ exports = module.exports = function vmplate(string, locals, filename) {
     var output = 'var str = ""\n';
     var token = SCRIPT;
     var start = 0;
-    var previous;
+    var input;
     var match;
 
     function push(str, raw) {
