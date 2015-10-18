@@ -25,18 +25,15 @@ exports = module.exports = function vmplate(string, locals, filename) {
     var previous;
     var match;
 
-    function push(str) {
+    function push(str, raw) {
       if (!str.length) {
         return;
       }
-      output += 'str += ' + str + '\n';
-    }
-
-    function eval(str) {
-      if (!str.length) {
-        return;
+      if (raw) {
+        output += str + '\n';
+      } else {
+        output += 'str += ' + str + '\n';
       }
-      output += str + '\n';
     }
 
     function code(str) {
@@ -46,7 +43,7 @@ exports = module.exports = function vmplate(string, locals, filename) {
         push(trim(str));
         break;
       case '<%':
-        eval(trim(str));
+        push(trim(str), true);
         break;
       }
     }
