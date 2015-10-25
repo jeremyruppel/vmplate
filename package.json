@@ -17,6 +17,10 @@
   ],
   "author": "Jeremy Ruppel",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jeremyruppel/vmplate.git"
+  },
   "devDependencies": {
     "jshint": "^2.8.0",
     "mocha": "^2.3.3"
